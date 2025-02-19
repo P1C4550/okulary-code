@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#include "WiFi.h"
 #include "Adafruit_VL53L0X.h"
-
+/* FOR FUTURE USE
+#include "WiFi.h"
 #include "wifi_config.h"
-
+*/
 #define PIN_SDA_PIN 8 // connected HIGH side to builtin LED
 #define PIN_SCL_PIN 9
 #define PIN_BUZZER 10
