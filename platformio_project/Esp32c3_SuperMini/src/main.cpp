@@ -96,5 +96,5 @@ void setup()
 
 void loop()
 {
-
+ //keeny tu był
 }
