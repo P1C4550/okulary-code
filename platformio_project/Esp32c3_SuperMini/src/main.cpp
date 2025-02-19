@@ -45,8 +45,6 @@ void setup()
   playMelody();
 
   // begin sensors
-
-  //  // sensor 1 begin
   digitalWrite(PIN_XSHUT_LEFT, LOW);
   while(!sensorRight.begin(0x30))
   {
@@ -90,7 +88,9 @@ void setup()
     {
       leftRange = min((short)sensorLeft.readRange(), SENSOR_MAX_RANGE_MM);
     }
-    // tutaj pipanie i matma cala
+    // tutaj pipanie i matma cala, wykorzystaj rightRange i leftRange
+    // na brzeczek jest tak: tone(PIN_BUZZER, czestotliwosc_Hz, dlugosc_ms)
+    // potem delay dłuższy od długości pipniecia bo jakby program nie czeka aż skonczy pipać tylko leci dalej z tego co wiem
   }
 }
 
