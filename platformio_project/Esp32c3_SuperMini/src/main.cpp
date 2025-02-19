@@ -90,6 +90,7 @@ void setup()
     {
       leftRange = min((short)sensorLeft.readRange(), SENSOR_MAX_RANGE_MM);
     }
+    // tutaj pipanie i matma cala
   }
 }
 
