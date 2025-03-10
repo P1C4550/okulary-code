@@ -10,7 +10,8 @@
 #define PIN_XSHUT_RIGHT 2
 #define PIN_XSHUT_LEFT 3
 
-#define SENSOR_MAX_RANGE_MM (short)2500
+#define SENSOR_MAX_RANGE_MM 2500
+#define MEASUREMENTS_COUNT 3
 
 Adafruit_VL53L0X sensorRight = Adafruit_VL53L0X(); // first sensor (the one with the black dot)
 Adafruit_VL53L0X sensorLeft = Adafruit_VL53L0X(); // second sensor
@@ -24,6 +25,40 @@ void playMelody()
     tone(PIN_BUZZER, melody[i], duration[i]);
     delay(duration[i] + 50);
   }
+}
+
+short correctMeasurements(int * measurements) // takes an array of 3 short ints, returns one short
+{
+  int measurements_delta[MEASUREMENTS_COUNT] = {0};
+
+  int sum = 0;
+  for (int i = 0; i < MEASUREMENTS_COUNT; i++)
+  {
+    sum += measurements[i];
+  }
+  float avarge = (float)sum / (float)MEASUREMENTS_COUNT;
+  int max_delta = 0;
+  for (int i = 0; i < MEASUREMENTS_COUNT; i++)
+  {
+    measurements_delta[i] = abs(measurements[i] - avarge);
+    max_delta = max(measurements_delta[i], max_delta);
+  }
+  for (int i = 0; i < MEASUREMENTS_COUNT; i++)
+  {
+    if (measurements_delta[i] == max_delta)
+    {
+      measurements[i] = -1;
+      break;
+    }
+  }
+  sum = 0;
+  for (int i = 0; i < MEASUREMENTS_COUNT; i++)
+  {
+    int val = measurements[i]!=-1?measurements[i]:0;
+    sum += val;
+  }
+  avarge = (float)sum / ((float)MEASUREMENTS_COUNT - 1.0);
+  return avarge;
 }
 
 void pinsInit()
@@ -76,21 +111,37 @@ void setup()
     }
   }
 
-  short rightRange = 0;
-  short leftRange = 0;
+  int rightRange = 0;
+  int leftRange = 0;
+
+  int rightMeasurementCount = 0;
+  int leftMeasurementCount = 0;
+
+  int rightMeasurements[MEASUREMENTS_COUNT];
+  int leftMeasurements[MEASUREMENTS_COUNT];
   while (true)
   {
     if (sensorRight.isRangeComplete())
     {
-      rightRange = min((short)sensorRight.readRange(), SENSOR_MAX_RANGE_MM);
+      rightMeasurements[rightMeasurementCount] = min((int)sensorRight.readRange(), SENSOR_MAX_RANGE_MM);
+      rightMeasurementCount += 1;
+      if (rightMeasurementCount = MEASUREMENTS_COUNT)
+      {
+        rightMeasurementCount = 0;
+        rightRange = correctMeasurements(rightMeasurements);
+      }
     }
     if (sensorLeft.isRangeComplete())
     {
-      leftRange = min((short)sensorLeft.readRange(), SENSOR_MAX_RANGE_MM);
+      leftMeasurements[leftMeasurementCount] = min((int)sensorLeft.readRange(), SENSOR_MAX_RANGE_MM);
+      leftMeasurementCount += 1;
+      if (leftMeasurementCount = MEASUREMENTS_COUNT)
+      {
+        rightMeasurementCount = 0;
+        leftRange = correctMeasurements(leftMeasurements);
+      }
     }
-    // tutaj pipanie i matma cala, wykorzystaj rightRange i leftRange
-    // na brzeczek jest tak: tone(PIN_BUZZER, czestotliwosc_Hz, dlugosc_ms)
-    // potem delay dłuższy od długości pipniecia bo jakby program nie czeka aż skonczy pipać tylko leci dalej z tego co wiem
+    // ale robota z tobą jest tragiczna
   }
 }
 
