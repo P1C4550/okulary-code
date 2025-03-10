@@ -12,7 +12,7 @@
 
 #define SENSOR_MAX_RANGE_MM 2500
 #define MEASUREMENTS_COUNT 3
-#define MEASUREMENTS_PROMIXITY_PERCENT 0.1 // how much of the sensors measurement is close to the other one; this defines the threshold if both sensors see the same object/distance
+#define MEASUREMENTS_PROMIXITY_PERCENT 0.2 // how much of the sensors measurement is close to the other one; this defines the threshold if both sensors see the same object/distance
 
 Adafruit_VL53L0X sensorRight = Adafruit_VL53L0X(); // first sensor (the one with the black dot)
 Adafruit_VL53L0X sensorLeft = Adafruit_VL53L0X(); // second sensor
@@ -134,7 +134,7 @@ void setup()
     {
       rightMeasurements[rightMeasurementCount] = min((int)sensorRight.readRange(), SENSOR_MAX_RANGE_MM);
       rightMeasurementCount += 1;
-      if (rightMeasurementCount = MEASUREMENTS_COUNT)
+      if (rightMeasurementCount == MEASUREMENTS_COUNT)
       {
         rightMeasurementCount = 0;
         rightRange = correctMeasurements(rightMeasurements);
@@ -146,18 +146,24 @@ void setup()
     {
       leftMeasurements[leftMeasurementCount] = min((int)sensorLeft.readRange(), SENSOR_MAX_RANGE_MM);
       leftMeasurementCount += 1;
-      if (leftMeasurementCount = MEASUREMENTS_COUNT)
+      if (leftMeasurementCount == MEASUREMENTS_COUNT)
       {
-        rightMeasurementCount = 0;
+        leftMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
+        Serial.println("legt");
+        Serial.println(leftRange);
+        Serial.println(rightRange);
+        Serial.println(abs(rightRange - leftRange));
+        Serial.println((rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT));
         finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
       }
     }
-
+    
     if (millis() - pow(finalRange*RANGE_MODIFIER, RANGE_EXPONENT) > start_time_ms)
     {
       tone(PIN_BUZZER, 1000, 10);
       delay(50);
+      start_time_ms = millis();
     }
     // ale robota z tobą jest tragiczna
   }
@@ -165,5 +171,5 @@ void setup()
 
 void loop()
 {
-  
+
 }
