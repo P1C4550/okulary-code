@@ -12,9 +12,14 @@
 
 #define SENSOR_MAX_RANGE_MM 2500
 #define MEASUREMENTS_COUNT 3
+#define MEASUREMENTS_PROMIXITY_PERCENT 0.1 // how much of the sensors measurement is close to the other one; this defines the threshold if both sensors see the same object/distance
 
 Adafruit_VL53L0X sensorRight = Adafruit_VL53L0X(); // first sensor (the one with the black dot)
 Adafruit_VL53L0X sensorLeft = Adafruit_VL53L0X(); // second sensor
+
+
+const float RANGE_MODIFIER = 0.006;
+const float RANGE_EXPONENT = 3.0;
 
 void playMelody()
 {
@@ -119,6 +124,10 @@ void setup()
 
   int rightMeasurements[MEASUREMENTS_COUNT];
   int leftMeasurements[MEASUREMENTS_COUNT];
+
+  unsigned long start_time_ms = millis();
+
+  int finalRange = 0;
   while (true)
   {
     if (sensorRight.isRangeComplete())
@@ -129,6 +138,8 @@ void setup()
       {
         rightMeasurementCount = 0;
         rightRange = correctMeasurements(rightMeasurements);
+        // long ass line ; and duplicated
+        finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
       }
     }
     if (sensorLeft.isRangeComplete())
@@ -139,7 +150,14 @@ void setup()
       {
         rightMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
+        finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
       }
+    }
+
+    if (millis() - pow(finalRange*RANGE_MODIFIER, RANGE_EXPONENT) > start_time_ms)
+    {
+      tone(PIN_BUZZER, 1000, 10);
+      delay(50);
     }
     // ale robota z tobą jest tragiczna
   }
