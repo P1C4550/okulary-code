@@ -150,11 +150,6 @@ void setup()
       {
         leftMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
-        Serial.println("legt");
-        Serial.println(leftRange);
-        Serial.println(rightRange);
-        Serial.println(abs(rightRange - leftRange));
-        Serial.println((rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT));
         finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
       }
     }
