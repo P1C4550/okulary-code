@@ -7,9 +7,181 @@
 	(title_block
 		(title "Schemat połączeń w okularach")
 		(date "2025-03-11")
-		(comment 1 "Zasilanie poprzez port USB-C na ESP32-c3 (nie zawarty w schemacie)")
+		(comment 1 "programowanie poprzez port USB-C na ESP32-c3 (nie zawarty w schemacie)")
 	)
 	(lib_symbols
+		(symbol "Device:Battery_Cell"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "BT"
+				(at 2.54 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Battery_Cell"
+				(at 2.54 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 1.524 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 1.524 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Single-cell battery"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "battery cell"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Battery_Cell_0_1"
+				(rectangle
+					(start -2.286 1.778)
+					(end 2.286 1.524)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 1.016)
+					(end 1.524 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0.762) (xy 0 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.778) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 3.048) (xy 1.778 3.048)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 3.556) (xy 1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Battery_Cell_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:Buzzer"
 			(pin_names
 				(offset 0.0254) hide)
@@ -831,6 +1003,18 @@
 		(uuid "5f87b3b7-9da3-4428-be31-0baf73ab45bb")
 	)
 	(junction
+		(at 127 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7e95d901-22bc-46b3-aa9e-9bfe08733207")
+	)
+	(junction
+		(at 123.19 71.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a6eae26d-202c-48b6-99c9-947d86a3df33")
+	)
+	(junction
 		(at 160.02 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -959,6 +1143,16 @@
 			(type default)
 		)
 		(uuid "5bea4094-0767-4c44-b508-a3d86a11575f")
+	)
+	(wire
+		(pts
+			(xy 123.19 71.12) (xy 135.89 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c69b942-4d58-4128-980d-5a120b035ce6")
 	)
 	(wire
 		(pts
@@ -1142,6 +1336,26 @@
 	)
 	(wire
 		(pts
+			(xy 135.89 71.12) (xy 135.89 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0fb905c-9c93-4751-8db7-da5a0f490b17")
+	)
+	(wire
+		(pts
+			(xy 135.89 67.31) (xy 134.62 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e58a1e52-b456-47c6-a0ad-2010db1c95f8")
+	)
+	(wire
+		(pts
 			(xy 123.19 71.12) (xy 123.19 120.65)
 		)
 		(stroke
@@ -1221,7 +1435,6 @@
 		(uuid "7ed355b0-d9be-4dee-8661-9a9c435e7688")
 	)
 	(symbol
-		(lib_name "okulary_parts:VL53LDK")
 		(lib_id "okulary_parts:VL53LDK")
 		(at 152.4 88.9 0)
 		(unit 1)
@@ -1304,7 +1517,6 @@
 		)
 	)
 	(symbol
-		(lib_name "okulary_parts:VL53LDK")
 		(lib_id "okulary_parts:VL53LDK")
 		(at 182.88 88.9 0)
 		(unit 1)
@@ -1381,6 +1593,73 @@
 			(project ""
 				(path "/e697d9f0-6df0-4ad6-b7b8-3236f8a796fa"
 					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery_Cell")
+		(at 129.54 67.31 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "427e92f4-c99e-4636-ad0a-736fd8b73691")
+		(property "Reference" "BT1"
+			(at 131.3815 59.69 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3V"
+			(at 131.3815 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 131.064 67.31 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 131.064 67.31 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-cell battery"
+			(at 129.54 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "e0e43df3-8eb5-45db-99ff-4e564943cef6")
+		)
+		(pin "1"
+			(uuid "8040b905-8a68-4477-b2cf-0f2f5c097607")
+		)
+		(instances
+			(project ""
+				(path "/e697d9f0-6df0-4ad6-b7b8-3236f8a796fa"
+					(reference "BT1")
 					(unit 1)
 				)
 			)
