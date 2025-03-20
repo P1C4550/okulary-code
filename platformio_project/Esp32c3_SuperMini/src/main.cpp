@@ -32,7 +32,7 @@ void playMelody()
   }
 }
 
-short correctMeasurements(int * measurements) // takes an array of 3 short ints, returns one short
+int correctMeasurements(int * measurements) // takes an array of MEASUREMENTS_COUNT ints, returns one int
 {
   int measurements_delta[MEASUREMENTS_COUNT] = {0};
 
@@ -139,7 +139,10 @@ void setup()
         rightMeasurementCount = 0;
         rightRange = correctMeasurements(rightMeasurements);
         // long ass line ; and duplicated
-        finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
+        // depreciated cuz doesnt work well
+        // will use another alghoritm
+        //finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
+        finalRange = min(rightRange, leftRange, SENSOR_MAX_RANGE_MM);
       }
     }
     if (sensorLeft.isRangeComplete())
@@ -150,7 +153,7 @@ void setup()
       {
         leftMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
-        finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
+        finalRange = min(rightRange, leftRange, SENSOR_MAX_RANGE_MM);
       }
     }
     
