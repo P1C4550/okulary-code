@@ -163,7 +163,6 @@ void setup()
       delay(50);
       start_time_ms = millis();
     }
-    // ale robota z tobą jest tragiczna
   }
 }
 
