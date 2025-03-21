@@ -88,7 +88,7 @@ void setup()
     delay(100);
     serialCounter++;
     tone(PIN_BUZZER, 500, 10);
-    if (serialCounter > 30)
+    if (serialCounter > 5)
     {
       enableSerial = false;
       tone(PIN_BUZZER, 500, 500);
@@ -164,7 +164,7 @@ void setup()
         }
         // long ass line ; and duplicated
         // depreciated cuz doesnt work well
-        // will use another alghoritm
+        // will use another alghoritm simple min() for now
         //finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
         finalRange = min(SENSOR_MAX_RANGE_MM, min(rightRange, leftRange));
       }
