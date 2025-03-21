@@ -77,7 +77,7 @@ void pinsInit()
 
 void setup()
 {
-  Serial.begin(9600); // whatever, usb speed anyway
+  Serial.begin(115200); // whatever, usb speed anyway
 
   pinsInit();
   Wire.begin(8, 9);
@@ -100,6 +100,8 @@ void setup()
     tone(PIN_BUZZER, 1000, 50);
     delay(1000);
   }
+
+  Serial.println("hello");
 
   sensorRight.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_LONG_RANGE);
   sensorRight.startRangeContinuous();
@@ -128,6 +130,7 @@ void setup()
   unsigned long start_time_ms = millis();
 
   int finalRange = 0;
+  int oldFinalRange = 0;
   while (true)
   {
     if (sensorRight.isRangeComplete())
@@ -138,11 +141,13 @@ void setup()
       {
         rightMeasurementCount = 0;
         rightRange = correctMeasurements(rightMeasurements);
+        Serial.print("RIGHT ");
+        Serial.println(rightRange);
         // long ass line ; and duplicated
         // depreciated cuz doesnt work well
         // will use another alghoritm
         //finalRange = (abs(rightRange - leftRange) < (rightRange * MEASUREMENTS_PROMIXITY_PERCENT + leftRange * MEASUREMENTS_PROMIXITY_PERCENT) / 2.0) ? (rightRange + leftRange) / 2.0 : SENSOR_MAX_RANGE_MM;
-        finalRange = min(rightRange, leftRange, SENSOR_MAX_RANGE_MM);
+        finalRange = min(SENSOR_MAX_RANGE_MM, min(rightRange, leftRange));
       }
     }
     if (sensorLeft.isRangeComplete())
@@ -153,14 +158,18 @@ void setup()
       {
         leftMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
-        finalRange = min(rightRange, leftRange, SENSOR_MAX_RANGE_MM);
+        Serial.print("LEFT ");
+        Serial.println(leftRange);
+        finalRange = min(SENSOR_MAX_RANGE_MM, min(rightRange, leftRange));
       }
     }
     
     if (millis() - pow(finalRange*RANGE_MODIFIER, RANGE_EXPONENT) > start_time_ms)
     {
-      tone(PIN_BUZZER, 1000, 10);
-      delay(50);
+      Serial.print("final");
+      Serial.println(finalRange);
+      tone(PIN_BUZZER, 1000, 5);
+      delay(1000);
       start_time_ms = millis();
     }
   }
