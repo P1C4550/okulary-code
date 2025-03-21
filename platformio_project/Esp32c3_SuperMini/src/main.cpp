@@ -79,6 +79,20 @@ void setup()
 {
   Serial.begin(9600); // whatever, usb speed anyway
 
+  int serialCounter = 0;
+  bool enableSerial = true;
+  while (!Serial)
+  {
+    delay(100);
+    serialCounter++;
+    if (serialCounter > 30)
+    {
+      enableSerial = false;
+      tone(PIN_BUZZER, 500, 500);
+      break;
+    }
+  }
+
   pinsInit();
   Wire.begin(8, 9);
 
@@ -101,8 +115,6 @@ void setup()
     delay(1000);
   }
 
-  Serial.println("hello");
-
   sensorRight.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_LONG_RANGE);
   sensorRight.startRangeContinuous();
   sensorLeft.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_LONG_RANGE);
@@ -113,8 +125,11 @@ void setup()
     Wire.beginTransmission(address);
     if (Wire.endTransmission() == 0)
     {
-      Serial.print("Found I2C device at 0x");
-      Serial.println(address, HEX);
+      if (enableSerial)
+      { 
+        Serial.print("Found I2C device at 0x");
+        Serial.println(address, HEX);
+      }
     }
   }
 
@@ -140,8 +155,11 @@ void setup()
       {
         rightMeasurementCount = 0;
         rightRange = correctMeasurements(rightMeasurements);
-        Serial.print("RIGHT ");
-        Serial.println(rightRange);
+        if (enableSerial)
+        {
+          Serial.print("RIGHT ");
+          Serial.println(rightRange);
+        }
         // long ass line ; and duplicated
         // depreciated cuz doesnt work well
         // will use another alghoritm
@@ -157,16 +175,22 @@ void setup()
       {
         leftMeasurementCount = 0;
         leftRange = correctMeasurements(leftMeasurements);
-        Serial.print("LEFT ");
-        Serial.println(leftRange);
+        if (enableSerial)
+        {
+          Serial.print("LEFT ");
+          Serial.println(leftRange);
+        }
         finalRange = min(SENSOR_MAX_RANGE_MM, min(rightRange, leftRange));
       }
     }
     
     if (millis() - pow(finalRange*RANGE_MODIFIER, RANGE_EXPONENT) > start_time_ms)
     {
-      Serial.print("final; beeping");
-      Serial.println(finalRange);
+      if (enableSerial)
+      {
+        Serial.print("final; beeping: ");
+        Serial.println(finalRange);
+      }
       tone(PIN_BUZZER, 1000, 10);
       delay(50);
       start_time_ms = millis();
