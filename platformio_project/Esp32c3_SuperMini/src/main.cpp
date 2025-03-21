@@ -77,23 +77,25 @@ void pinsInit()
 
 void setup()
 {
+  pinsInit();
+
   Serial.begin(9600); // whatever, usb speed anyway
 
   int serialCounter = 0;
   bool enableSerial = true;
-  while (!Serial)
+  while (!Serial && enableSerial)
   {
     delay(100);
     serialCounter++;
+    tone(PIN_BUZZER, 500, 10);
     if (serialCounter > 30)
     {
       enableSerial = false;
       tone(PIN_BUZZER, 500, 500);
-      break;
+      delay(1000);
     }
   }
 
-  pinsInit();
   Wire.begin(8, 9);
 
   playMelody();
@@ -188,7 +190,7 @@ void setup()
     {
       if (enableSerial)
       {
-        Serial.print("final; beeping: ");
+        Serial.print("fina;, beeping ");
         Serial.println(finalRange);
       }
       tone(PIN_BUZZER, 1000, 10);
