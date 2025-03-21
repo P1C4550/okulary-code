@@ -77,7 +77,7 @@ void pinsInit()
 
 void setup()
 {
-  Serial.begin(115200); // whatever, usb speed anyway
+  Serial.begin(9600); // whatever, usb speed anyway
 
   pinsInit();
   Wire.begin(8, 9);
@@ -88,16 +88,16 @@ void setup()
   digitalWrite(PIN_XSHUT_LEFT, LOW);
   while(!sensorRight.begin(0x30))
   {
-    tone(PIN_BUZZER, 2000, 20);
+    tone(PIN_BUZZER, 5000, 20);
     delay(100);
   }
 
   digitalWrite(PIN_XSHUT_LEFT, HIGH);
   while(!sensorLeft.begin(0x29))
   {
-    tone(PIN_BUZZER, 1000, 10);
+    tone(PIN_BUZZER, 5000, 10);
     delay(200);
-    tone(PIN_BUZZER, 1000, 50);
+    tone(PIN_BUZZER, 5000, 50);
     delay(1000);
   }
 
@@ -130,7 +130,6 @@ void setup()
   unsigned long start_time_ms = millis();
 
   int finalRange = 0;
-  int oldFinalRange = 0;
   while (true)
   {
     if (sensorRight.isRangeComplete())
@@ -166,10 +165,10 @@ void setup()
     
     if (millis() - pow(finalRange*RANGE_MODIFIER, RANGE_EXPONENT) > start_time_ms)
     {
-      Serial.print("final");
+      Serial.print("final; beeping");
       Serial.println(finalRange);
-      tone(PIN_BUZZER, 1000, 5);
-      delay(1000);
+      tone(PIN_BUZZER, 1000, 10);
+      delay(50);
       start_time_ms = millis();
     }
   }
@@ -177,5 +176,6 @@ void setup()
 
 void loop()
 {
-
+  tone(PIN_BUZZER, 300, 100);
+  delay(1000);
 }
